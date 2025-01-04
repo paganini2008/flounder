@@ -10,7 +10,6 @@ import com.github.doodler.common.timeseries.UserSampler;
 import com.github.doodler.common.timeseries.UserSamplerImpl;
 import com.github.doodler.common.utils.ConvertUtils;
 import com.github.doodler.common.utils.TimeWindowUnit;
-import com.github.vortex.tss.TssOverflowDataHandler;
 
 /**
  * 
@@ -23,7 +22,7 @@ public class DecimalTypeTsdStore extends StringSimpleUserSamplerService<NumberMe
         implements TsdStore<NumberMetric<BigDecimal>> {
 
     public DecimalTypeTsdStore(int span, TimeWindowUnit timeWindowUnit, int maxSize,
-            TssOverflowDataHandler<NumberMetric<BigDecimal>> dataManager) {
+            TsdOverflowDataHandler<NumberMetric<BigDecimal>> dataManager) {
         super(span, timeWindowUnit, maxSize, Arrays.asList(dataManager));
     }
 

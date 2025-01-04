@@ -1,6 +1,5 @@
 package com.github.vortex.web;
 
-import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.github.doodler.common.Constants;
@@ -17,10 +16,6 @@ import com.github.vortex.tsd.EnableTsdStoreServer;
 @EnableTsdStoreServer
 @SpringBootApplication
 public class TsdStoreApplicationMain {
-
-    static {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-    }
 
     public static void main(String[] args) {
         int serverPort =

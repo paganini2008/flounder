@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import com.github.doodler.common.timeseries.NumberMetric;
 import com.github.doodler.common.utils.TimeWindowUnit;
-import com.github.vortex.tss.TssOverflowDataHandler;
 
 /**
  * 
@@ -30,15 +29,15 @@ public class TsdStoreService {
 
     @Qualifier("decimalTypeOverflowDataManager")
     @Autowired
-    private TssOverflowDataHandler<NumberMetric<BigDecimal>> decimalTypeOverflowDataManager;
+    private TsdOverflowDataHandler<NumberMetric<BigDecimal>> decimalTypeOverflowDataManager;
 
     @Qualifier("longTypeOverflowDataManager")
     @Autowired
-    private TssOverflowDataHandler<NumberMetric<Long>> longTypeOverflowDataManager;
+    private TsdOverflowDataHandler<NumberMetric<Long>> longTypeOverflowDataManager;
 
     @Qualifier("doubleTypeOverflowDataManager")
     @Autowired
-    private TssOverflowDataHandler<NumberMetric<Double>> doubleTypeOverflowDataManager;
+    private TsdOverflowDataHandler<NumberMetric<Double>> doubleTypeOverflowDataManager;
 
     @Autowired
     private DecimalTypeTsdStore decimalTypeTsdStore;

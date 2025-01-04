@@ -1,6 +1,7 @@
 package com.github.vortex.tsd;
 
 import java.math.BigDecimal;
+import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import com.github.doodler.common.timeseries.NumberMetric;
 import com.github.doodler.common.utils.TimeWindowUnit;
-import com.github.vortex.tss.TssOverflowDataHandler;
-import com.github.vortex.tss.TssRedisOverflowDataManager;
 
 /**
  * 
@@ -25,44 +24,48 @@ import com.github.vortex.tss.TssRedisOverflowDataManager;
 @Configuration(proxyBeanMethods = false)
 public class TsdStoreAutoConfiguration {
 
+    static {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+    }
+
     @Autowired
     private TsdStoreProperties tssProperties;
 
     @Bean("decimalTypeOverflowDataManager")
-    public TssOverflowDataHandler<NumberMetric<BigDecimal>> decimalTypeTssRedisOverflowDataManager(
+    public TsdOverflowDataHandler<NumberMetric<BigDecimal>> decimalTypeTssRedisOverflowDataManager(
             RedisTemplate<String, Object> redisTemplate) {
-        return new TssRedisOverflowDataManager<>("tss:decimal", redisTemplate);
+        return new TssRedisOverflowDataManager<>("tsd:decimal", redisTemplate);
     }
 
     @Bean
     public DecimalTypeTsdStore decimalTypeTsdStore(
-            @Qualifier("decimalTypeOverflowDataManager") TssOverflowDataHandler<NumberMetric<BigDecimal>> dataManager) {
+            @Qualifier("decimalTypeOverflowDataManager") TsdOverflowDataHandler<NumberMetric<BigDecimal>> dataManager) {
         return new DecimalTypeTsdStore(tssProperties.getSpan(), TimeWindowUnit.MINUTES,
                 tssProperties.getOverflowSize(), dataManager);
     }
 
     @Bean("longTypeOverflowDataManager")
-    public TssOverflowDataHandler<NumberMetric<Long>> longTypeTssRedisOverflowDataManager(
+    public TsdOverflowDataHandler<NumberMetric<Long>> longTypeTssRedisOverflowDataManager(
             RedisTemplate<String, Object> redisTemplate) {
-        return new TssRedisOverflowDataManager<>("tss:long", redisTemplate);
+        return new TssRedisOverflowDataManager<>("tsd:long", redisTemplate);
     }
 
     @Bean
     public LongTypeTsdStore longTypeTsdStore(
-            @Qualifier("longTypeOverflowDataManager") TssOverflowDataHandler<NumberMetric<Long>> dataManager) {
+            @Qualifier("longTypeOverflowDataManager") TsdOverflowDataHandler<NumberMetric<Long>> dataManager) {
         return new LongTypeTsdStore(tssProperties.getSpan(), TimeWindowUnit.MINUTES,
                 tssProperties.getOverflowSize(), dataManager);
     }
 
     @Bean("doubleTypeOverflowDataManager")
-    public TssOverflowDataHandler<NumberMetric<Double>> doubleTypeTssRedisOverflowDataManager(
+    public TsdOverflowDataHandler<NumberMetric<Double>> doubleTypeTssRedisOverflowDataManager(
             RedisTemplate<String, Object> redisTemplate) {
-        return new TssRedisOverflowDataManager<>("tss:double", redisTemplate);
+        return new TssRedisOverflowDataManager<>("tsd:double", redisTemplate);
     }
 
     @Bean
     public DoubleTypeTsdStore doubleTypeTsdStore(
-            @Qualifier("doubleTypeOverflowDataManager") TssOverflowDataHandler<NumberMetric<Double>> dataManager) {
+            @Qualifier("doubleTypeOverflowDataManager") TsdOverflowDataHandler<NumberMetric<Double>> dataManager) {
         return new DoubleTypeTsdStore(tssProperties.getSpan(), TimeWindowUnit.MINUTES,
                 tssProperties.getOverflowSize(), dataManager);
     }

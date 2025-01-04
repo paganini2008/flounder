@@ -17,13 +17,13 @@ import com.github.doodler.common.transmitter.Packet;
 public class DefaultTsdStoreHandler implements TsdStoreHandler {
 
     @Autowired
-    private DecimalTypeTsdStore decimalTypeTss;
+    private DecimalTypeTsdStore decimalTypeTsd;
 
     @Autowired
-    private LongTypeTsdStore longTypeTss;
+    private LongTypeTsdStore longTypeTsd;
 
     @Autowired
-    private DoubleTypeTsdStore doubleTypeTss;
+    private DoubleTypeTsdStore doubleTypeTsd;
 
     @Override
     public void consume(Packet packet) {
@@ -33,22 +33,22 @@ public class DefaultTsdStoreHandler implements TsdStoreHandler {
         Object data = packet.getObject();
         switch (dataType.toLowerCase()) {
             case "long":
-                NumberMetric<Long> longData = longTypeTss.getDataConverter().convert(data, packet);
-                longTypeTss.store(category, dimension, packet.getTimestamp(), s -> {
+                NumberMetric<Long> longData = longTypeTsd.getDataConverter().convert(data, packet);
+                longTypeTsd.store(category, dimension, packet.getTimestamp(), s -> {
                     s.merge(longData);
                 });
                 break;
             case "decimal":
                 NumberMetric<BigDecimal> decimalData =
-                        decimalTypeTss.getDataConverter().convert(data, packet);
-                decimalTypeTss.store(category, dimension, packet.getTimestamp(), s -> {
+                        decimalTypeTsd.getDataConverter().convert(data, packet);
+                decimalTypeTsd.store(category, dimension, packet.getTimestamp(), s -> {
                     s.merge(decimalData);
                 });
                 break;
             case "double":
                 NumberMetric<Double> doubleData =
-                        doubleTypeTss.getDataConverter().convert(data, packet);
-                doubleTypeTss.store(category, dimension, packet.getTimestamp(), s -> {
+                        doubleTypeTsd.getDataConverter().convert(data, packet);
+                doubleTypeTsd.store(category, dimension, packet.getTimestamp(), s -> {
                     s.merge(doubleData);
                 });
                 break;

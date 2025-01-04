@@ -9,7 +9,6 @@ import com.github.doodler.common.timeseries.UserSampler;
 import com.github.doodler.common.timeseries.UserSamplerImpl;
 import com.github.doodler.common.utils.ConvertUtils;
 import com.github.doodler.common.utils.TimeWindowUnit;
-import com.github.vortex.tss.TssOverflowDataHandler;
 
 /**
  * 
@@ -22,7 +21,7 @@ public class DoubleTypeTsdStore extends StringSimpleUserSamplerService<NumberMet
         implements TsdStore<NumberMetric<Double>> {
 
     public DoubleTypeTsdStore(int span, TimeWindowUnit timeWindowUnit, int maxSize,
-            TssOverflowDataHandler<NumberMetric<Double>> dataManager) {
+            TsdOverflowDataHandler<NumberMetric<Double>> dataManager) {
         super(span, timeWindowUnit, maxSize, Arrays.asList(dataManager));
     }
 

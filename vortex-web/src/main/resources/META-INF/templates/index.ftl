@@ -41,18 +41,18 @@
 			}
 			$.get(location, function(data){
 				var dataType = data.dataType;
-				var name = data.name;
-				var metric = data.metric;
+				var name = data.category;
+				var dimension = data.dimension;
 				var entries = data.data;
 				var categories = [], count=[], highestValues=[], middleValues=[], lowestValues=[];
 				for(var category in entries){
 					categories.push(category);
-					count.push(entries[category][metric]['count']);
-					highestValues.push(entries[category][metric]['highestValue']);
-					middleValues.push(entries[category][metric]['middleValue']);
-					lowestValues.push(entries[category][metric]['lowestValue']);
+					count.push(entries[category]['count']);
+					highestValues.push(entries[category]['highestValue']);
+					middleValues.push(entries[category]['averageValue']);
+					lowestValues.push(entries[category]['lowestValue']);
 				}
-				showChart('chartBox', '[Realtime Statistics] DataType: ' + dataType + ', Name: ' + name + ', Metric: '+ metric, categories, count, highestValues, middleValues, lowestValues);
+				showChart('chartBox', '[Realtime Statistics] DataType: ' + dataType + ', Category: ' + name + ', Dimension: '+ dimension, categories, count, highestValues, middleValues, lowestValues);
 			});
 	}
 	
@@ -241,7 +241,7 @@
 		</div>
 	</div>
 	<div id="foot">
-		Copyright @2017-2021 Fred Feng. All Rights Reserved.
+		Copyright @2017-2025 Fred Feng. All Rights Reserved.
 	</div>
 </body>
 </html>

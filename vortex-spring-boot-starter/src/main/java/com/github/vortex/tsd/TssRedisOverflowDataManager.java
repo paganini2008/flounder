@@ -1,4 +1,4 @@
-package com.github.vortex.tss;
+package com.github.vortex.tsd;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class TssRedisOverflowDataManager<T extends UserMetric<T>>
-        extends RedisOverflowDataManager<T> implements TssOverflowDataHandler<T> {
+        extends RedisOverflowDataManager<T> implements TsdOverflowDataHandler<T> {
 
     public TssRedisOverflowDataManager(String namespace,
             RedisTemplate<String, Object> redisOperations) {
