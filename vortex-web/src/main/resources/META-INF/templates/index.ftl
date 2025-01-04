@@ -40,23 +40,42 @@
 				return;
 			}
 			$.get(location, function(data){
-				var dataType = data.dataType;
-				var name = data.category;
-				var dimension = data.dimension;
-				var entries = data.data;
+				var dataType = data.data.dataType;
+				var name = data.data.category;
+				var dimension = data.data.dimension;
+				var entries = data.data.data;
+				//console.log(JSON.stringify(entries));
 				var categories = [], count=[], highestValues=[], middleValues=[], lowestValues=[];
+				var h,a,l;
 				for(var category in entries){
 					categories.push(category);
 					count.push(entries[category]['count']);
-					highestValues.push(entries[category]['highestValue']);
-					middleValues.push(entries[category]['averageValue']);
-					lowestValues.push(entries[category]['lowestValue']);
+					h=entries[category]['highestValue'];
+					if(h==null){
+						h=0;
+					}
+					a=entries[category]['averageValue'];
+					if(a==null){
+						a=0;
+					}
+					l=entries[category]['lowestValue'];
+					if(l==null){
+						l=0;
+					}
+					highestValues.push(h);
+					middleValues.push(a);
+					lowestValues.push(l);
 				}
 				showChart('chartBox', '[Realtime Statistics] DataType: ' + dataType + ', Category: ' + name + ', Dimension: '+ dimension, categories, count, highestValues, middleValues, lowestValues);
 			});
 	}
 	
 	function showChart(divId, title, categories, count, highestValues, middleValues, lowestValues){
+		console.log(categories);
+		console.log(count);
+		console.log(highestValues);
+		console.log(middleValues);
+		console.log(lowestValues);
 		if(map.containsKey(divId)){
 			var chart = map.get(divId);
 			var data = [{

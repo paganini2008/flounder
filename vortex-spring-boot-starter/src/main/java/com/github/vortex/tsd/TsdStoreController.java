@@ -4,6 +4,7 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TimeZone;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ import com.github.doodler.common.transmitter.Packet;
 public class TsdStoreController {
 
     @Autowired
-    private TsdStoreService tssService;
+    private TsdStoreService tsdStoreService;
 
     @Autowired
     private NioClient nioClient;
@@ -43,8 +44,18 @@ public class TsdStoreController {
         return ApiResult.ok(packet);
     }
 
+    @PostMapping("/test")
+    public ApiResult<Packet> test(@RequestParam("t") String dataType,
+            @RequestParam("c") String category, @RequestParam("d") String dimension) {
+        Packet packet = Packet
+                .wrap(Map.of("dataType", dataType, "category", category, "dimension", dimension));
+        packet.setObject(RandomUtils.nextLong(1, 10000));
+        nioClient.send(packet);
+        return ApiResult.ok(packet);
+    }
+
     @GetMapping("/retrieve")
-    public ApiResult<Map<String, Object>> retrieve(@RequestParam("t") String dataType,
+    public ApiResult<TsdQueryVo> retrieve(@RequestParam("t") String dataType,
             @RequestParam("c") String category, @RequestParam("d") String dimension,
             @RequestParam(name = "z", required = false) String zone) {
         Map<String, Object> results = Collections.emptyMap();
@@ -52,18 +63,23 @@ public class TsdStoreController {
                 : TimeZone.getTimeZone("Australia/Sydney");
         switch (dataType) {
             case "decimal":
-                results = tssService.retrieveWithDecimalType(category, dimension, timeZone);
+                results = tsdStoreService.retrieveWithDecimalType(category, dimension, timeZone);
                 break;
             case "long":
-                results = tssService.retrieveWithLongType(category, dimension, timeZone);
+                results = tsdStoreService.retrieveWithLongType(category, dimension, timeZone);
                 break;
             case "double":
-                results = tssService.retrieveWithDoubleType(category, dimension, timeZone);
+                results = tsdStoreService.retrieveWithDoubleType(category, dimension, timeZone);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected value: " + dataType);
         }
-        return ApiResult.ok(results);
+        TsdQueryVo queryVo = new TsdQueryVo();
+        queryVo.setDataType(dataType);
+        queryVo.setCategory(category);
+        queryVo.setDimension(dimension);
+        queryVo.setData(results);
+        return ApiResult.ok(queryVo);
     }
 
 }
