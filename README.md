@@ -1,100 +1,93 @@
-# Vortex Series
 
-**Vortex** is a lightweight distributed streaming computing framework. It is based on memory computing, which is suitable for high availability, high concurrency and real-time computing business scenarios.
+# Vortex TSDB
 
-**Vortex** is developed based on <code>SpringBoot</code> framework. It relies on [tridenter](https://github.com/paganini2008/tridenter-spring-boot-starter.git) component to build cluster. Vortex application expose extra independent TCP server port to accept external connections. Vortex application cluster member discover for each other and establish long-term connections through the net  multicast to achieve  high availability, decentralization and load balancing.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-17+-brightgreen.svg)](https://www.oracle.com/java/)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-Compatible-brightgreen.svg)](https://spring.io/projects/spring-cloud)
+[![Netty](https://img.shields.io/badge/Netty-Based-brightgreen.svg)](https://netty.io/)
 
-## Components
+Vortex TSDB (Time Series Database) is a highly scalable and flexible time series data storage solution built on **Java** and **Spring Cloud**. Designed to efficiently store and analyze time series data with fine granularity (down to 1-minute intervals), Vortex TSDB provides robust features for real-time monitoring, analytics, and large-scale data management. With its extensible architecture and integration capabilities, Vortex TSDB is a powerful tool for applications requiring precision and high...
 
-**The vortex series consists of three parts:**
+---
 
-* vortex-common
-  client side, vortex common classes, it makes a  Java application as vortex client.
-  
-* vortex-spring-boot-starter
-  server side, the core class of the vortex framework. it makes spring application  as vortex  cluster member.
-  
-* vortex-metrics-api
-  a time series computing  tool library, it is used to do relevant  programming on  time series computing based on memory
+## Key Features
 
-* vortex-metrics
-  a web application based on time series computing tool. It is easy to be scalable and have high performance in realtime situation
+### 1. Granular Time Series Data Storage
+Vortex TSDB supports fine-grained data storage with a granularity of **1-minute intervals**, making it suitable for real-time analytics and precision monitoring. Key data types supported include:
+- **Double**
+- **Long**
+- **Decimal**
 
-## Compatibility
+These data types enable precise measurements and calculations tailored to diverse application needs.
 
-1. Jdk8 (or later)
-2. <code>SpringBoot</code> Framework 2.2.x (or later)
-3. <code>Redis</code> 3.x (or later)
-4. <code>Netty</code> 4.x (or later)
+---
 
-## Install
+### 2. Advanced Statistical Calculations
+The database provides a comprehensive set of built-in statistical operations, enabling deep insights into time series data:
+- **Maximum and Minimum Values**: Identify peaks and troughs in your data.
+- **Average Values**: Calculate trends and patterns over time.
+- **Variance**: Measure data variability for predictive analytics.
+- **Baseline Comparisons**: Evaluate deviations from expected values.
 
-**Server Side**
-```xml
-<dependency>
-	<groupId>com.github.paganini2008.atlantis</groupId>
-	<artifactId>vortex-spring-boot-starter</artifactId>
-	<version>1.0-RC1</version>
-</dependency>
-```
-**Client Side**
-```xml
-<dependency>
-   <groupId>com.github.paganini2008.atlantis</groupId>
-   <artifactId>vortex-common</artifactId>
-   <version>1.0-RC1</version>
-</dependency>
-```
+These capabilities make Vortex TSDB a strong choice for applications requiring rich data analysis.
 
-At present, following open source projects based on vortex framework: 
-1. [Jellyfish](https://github.com/paganini2008/jellyfish.git)
-2. [Greenfinger](https://github.com/paganini2008/greenfinger.git)
-3. Vortex metrics
+---
 
-## Quick Start
+### 3. Flexible Storage Backends
+- **Redis-Based Storage**: The current implementation leverages Redis for fast, in-memory storage, ensuring low-latency read and write operations.
+- **Future-Ready Architecture**: Plans to support additional storage backends like **MySQL** or other databases, providing developers with flexibility to choose the optimal storage solution for their use case.
 
-#### How to use the vortex API in your application?
+---
 
-Server Side: 
+### 4. High Availability and Scalability
+- **Built on Netty NIO**: Ensures efficient, non-blocking IO for high-throughput communication.
+- **Horizontal Scalability**: Add more nodes to scale out the system seamlessly.
+- **Fault Tolerance**: Designed for high availability to ensure consistent service delivery in distributed environments.
 
-Implement <code>Handler</code> interface
+---
 
-``` java
+### 5. Built-in UI for Benchmarking
+Vortex TSDB includes a **benchmark testing UI** to evaluate performance metrics such as throughput, latency, and resource utilization. This makes it easier for users to test, analyze, and optimize the database in their specific environments.
 
-@Slf4j
-public class TestHandler implements Handler{
+---
 
-    @Override
-    public void onData(Tuple tuple) {
-        log.info(tuple.toString());
-    }
+## Getting Started
 
-}
+### 1. Prerequisites
+- **Java 17+**
+- **Redis 7.x** (for storage backend)
+- **Maven** (for building the project)
 
+### 2. Clone the Repository
+```bash
+git clone https://github.com/paganini2008/vortex.git
+cd vortex
 ```
 
-Client Side:
-``` java
-String brokerUrl = "http://localhost:10010"; // Expose the location of Server Side
-TransportClient transportClient = new HttpTransportClient(brokerUrl);
-Tuple tuple = Tuple.newOne();
-tuple.setField("clusterName", clusterName);
-tuple.setField("applicationName", applicationName);
-tuple.setField("host", host);
-tuple.setField("message", "Hello World!");
-transportClient.write(tuple);
-
+### 3. Build and Run
+```bash
+mvn clean install
+java -jar target/vortex-tsdb.jar
 ```
 
-####   How to retain historical metrics data ?
+### 4. Access the UI
+Navigate to `http://localhost:8080` to access the benchmark testing UI and explore the database capabilities.
 
-Default setting shows statistical time window is 1 minute and rollingly retain recent 60 records, discarding historical records once exceeding the size. If you want to save historical metrics data, You need to:
+---
 
-* Implementing interface <code>io.atlantisframework.vortex.metric.api.MetricEvictionHandler</code>  to customize your persistence policy
-* Implementing interface <code>io.atlantisframework.jellyfish.http.MetricSequencerFactory</code> or expanding class <code>io.atlantisframework.jellyfish.http.DefaultMetricSequencerFactory</code> and redefine a <code>GenericUserMetricSequencer</code>
+## Documentation
+For detailed documentation, API reference, and advanced configuration, visit the [Official Documentation](https://github.com/paganini2008/vortex/wiki).
 
+---
 
+## Contributing
+We welcome contributions! Check out the [Contributing Guide](CONTRIBUTING.md) for more information on how to get involved.
 
+---
 
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+---
 
+Vortex TSDB combines precision, scalability, and extensibility to deliver a cutting-edge time series database solution. Whether for real-time monitoring, predictive analytics, or large-scale data management, Vortex TSDB provides the tools and flexibility you need to succeed.
