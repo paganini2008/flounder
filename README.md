@@ -6,7 +6,7 @@
 [![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-Compatible-brightgreen.svg)](https://spring.io/projects/spring-cloud)
 [![Netty](https://img.shields.io/badge/Netty-Based-brightgreen.svg)](https://netty.io/)
 
-Vortex TSDB (Time Series Database) is a highly scalable and flexible time series data storage solution built on **Java** and **Spring Cloud**. Designed to efficiently store and analyze time series data with fine granularity (down to 1-minute intervals), Vortex TSDB provides robust features for real-time monitoring, analytics, and large-scale data management. With its extensible architecture and integration capabilities, Vortex TSDB is a powerful tool for applications requiring precision and high...
+Vortex TSDB (Time Series Database) is a highly scalable and flexible time series data storage solution built on **Java** and **Spring Boot**. Designed to efficiently store and analyze time series data with fine granularity (down to 1-minute intervals), Vortex TSDB provides robust features for real-time monitoring, analytics, and large-scale data management. With its extensible architecture and integration capabilities, Vortex TSDB is a powerful tool for applications requiring precision and high...
 
 ---
 
@@ -67,11 +67,50 @@ cd vortex
 ### 3. Build and Run
 ```bash
 mvn clean install
-java -jar target/vortex-tsdb.jar
+java -jar target/vortex-tsdb-web.jar
 ```
 
-### 4. Access the UI
-Navigate to `http://localhost:8080` to access the benchmark testing UI and explore the database capabilities.
+### 4. API
+
+##### 4.1 Push Data API
+
+- **Path**: `/tsd/push`
+- **Method**: `POST`
+- **Description**: Push time series data to the server.
+- **Example Request**: `http://localhost:55610/tsd/push?t=long&c=car&d=speed&v=44`
+
+##### Parameters
+
+| Parameter Name | Type   | Required | Description                                     | Example Value |
+|----------------|--------|----------|-------------------------------------------------|---------------|
+| t | String | Yes | Data type (long/decimal/double) | long |
+| c | String | Yes | Category (e.g., device category or system module) | car |
+| d | String | Yes | Dimension (e.g., metric name) | speed |
+| v | String | Yes | Value (supports numeric string) | 44 |
+
+
+##### 4.2 Retrieve Data API
+- **Path**: `/tsd/retrieve`
+- **Method**: `GET`
+- **Description**: Retrieve stored time series data.
+- **Example Request**: `http://localhost:57741/tsd/retrieve?t=long&c=car&d=speed`
+
+##### Parameters
+
+| Parameter Name | Type   | Required | Description                                     | Example Value |
+|----------------|--------|----------|-------------------------------------------------|---------------|
+| t | String | Yes | Data type (long/decimal/double) | long |
+| c | String | Yes | Category (e.g., device category or system module) | car |
+| d | String | Yes | Dimension (e.g., metric name) | speed |
+| z | String | No | Time zone (default: Australia/Sydney) | Asia/Shanghai |
+
+### 5. Access the UI
+Navigate to `http://localhost:8080/tsd/metric` to access the benchmark testing UI and explore the database capabilities.
+
+![VortexWeb.png](https://upload-images.jianshu.io/upload_images/26217505-214c92426ce38682.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
 
 ---
 
