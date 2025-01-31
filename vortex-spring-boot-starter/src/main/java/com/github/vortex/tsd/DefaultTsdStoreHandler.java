@@ -3,6 +3,7 @@ package com.github.vortex.tsd;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.github.doodler.common.events.Context;
 import com.github.doodler.common.timeseries.NumberMetric;
 import com.github.doodler.common.transmitter.Packet;
 
@@ -26,7 +27,7 @@ public class DefaultTsdStoreHandler implements TsdStoreHandler {
     private DoubleTypeTsdStore doubleTypeTsdStore;
 
     @Override
-    public void consume(Packet packet) {
+    public void consume(Packet packet, Context context) {
         String dataType = packet.getStringField("dataType");
         String category = packet.getStringField("category");
         String dimension = packet.getStringField("dimension");
