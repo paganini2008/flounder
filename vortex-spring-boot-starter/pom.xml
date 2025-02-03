@@ -90,7 +90,7 @@
 				</executions>
 			</plugin>
 			
-			<!-- mvn license:format -->
+			<!-- mvn license:format 
             <plugin>
 			    <groupId>com.mycila</groupId>
 			    <artifactId>license-maven-plugin</artifactId>
@@ -109,7 +109,7 @@
 			        </includes>
 			    </configuration>
 			</plugin>
-			
+			-->
 		</plugins>
 	</build>
 </project>
