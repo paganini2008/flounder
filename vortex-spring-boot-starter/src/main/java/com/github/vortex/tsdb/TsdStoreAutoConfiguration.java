@@ -1,4 +1,17 @@
-package com.github.vortex.tsd;
+/*
+ * Copyright 2017-2025 Fred Feng (paganini.fy@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.github.vortex.tsdb;
 
 import java.math.BigDecimal;
 import java.util.TimeZone;
@@ -14,7 +27,7 @@ import com.github.doodler.common.utils.TimeWindowUnit;
 
 /**
  * 
- * @Description: TssConfig
+ * @Description: TsdStoreAutoConfiguration
  * @Author: Fred Feng
  * @Date: 02/01/2025
  * @Version 1.0.0
@@ -34,7 +47,7 @@ public class TsdStoreAutoConfiguration {
     @Bean("decimalTypeOverflowDataManager")
     public TsdOverflowDataHandler<NumberMetric<BigDecimal>> decimalTypeTssRedisOverflowDataManager(
             RedisTemplate<String, Object> redisTemplate) {
-        return new TssRedisOverflowDataManager<>("tsd:decimal", redisTemplate);
+        return new TsdRedisOverflowDataManager<>("tsd:decimal", redisTemplate);
     }
 
     @Bean
@@ -47,7 +60,7 @@ public class TsdStoreAutoConfiguration {
     @Bean("longTypeOverflowDataManager")
     public TsdOverflowDataHandler<NumberMetric<Long>> longTypeTssRedisOverflowDataManager(
             RedisTemplate<String, Object> redisTemplate) {
-        return new TssRedisOverflowDataManager<>("tsd:long", redisTemplate);
+        return new TsdRedisOverflowDataManager<>("tsd:long", redisTemplate);
     }
 
     @Bean
@@ -60,7 +73,7 @@ public class TsdStoreAutoConfiguration {
     @Bean("doubleTypeOverflowDataManager")
     public TsdOverflowDataHandler<NumberMetric<Double>> doubleTypeTssRedisOverflowDataManager(
             RedisTemplate<String, Object> redisTemplate) {
-        return new TssRedisOverflowDataManager<>("tsd:double", redisTemplate);
+        return new TsdRedisOverflowDataManager<>("tsd:double", redisTemplate);
     }
 
     @Bean
